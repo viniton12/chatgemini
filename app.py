@@ -14,8 +14,8 @@ else:
     client = genai.Client(api_key=api_key)
 
     st.set_page_config(page_title="Chatbot AI", page_icon="🤖")
-    st.title("🤖 Chatbot com Gemini + Streamlit")
-    st.write("Digite sua mensagem abaixo e o bot responderá. O histórico de mensagens será mantido nesta sessão.")
+    st.title("🤖 Biochat")
+    st.write("Estou aqui para ajudar!!.")
 
     # Inicializa o histórico
     if "messages" not in st.session_state:
