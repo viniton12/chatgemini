@@ -12,14 +12,16 @@ if not api_key:
 else:
     client = genai.Client(api_key=api_key)
 
-    st.title("🤖 Chatbot com Streamlit + Gemini")
+    st.title("🤖 Biochat")
 
     user_input = st.text_input("Digite sua mensagem:")
 
     if st.button("Enviar") and user_input:
-        chat = client.chats.create(
-            model="gemini-2.0-flash",
-            messages=[{"role": "user", "content": user_input}]
-        )
-        resposta = chat.messages[-1].content
-        st.markdown(f"**Bot:** {resposta}")
+        # Cria o chat
+        chat = client.chats.create(model="gemini-2.0-flash")
+        
+        # Envia a mensagem
+        resposta = chat.send_message(user_input)
+        
+        # Exibe a resposta
+        st.markdown(f"**Bot:** {resposta.text}")
