@@ -3,10 +3,10 @@ import os
 from google import genai
 
 # Configuração da API
-api_key = os.getenv("GOOGLE_API_KEY")
+api_key = os.getenv("https://github.com/viniton12/chatgemini/blob/main/app.py")
 
 if not api_key:
-    st.error("AIzaSyB_4dVv2NLV8pkoLGMAibSvgLzCv-Zo6Ac")
+    st.error("api key not founded")
 else:
     client = genai.Client(api_key=api_key)
 
