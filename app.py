@@ -1,8 +1,10 @@
 import streamlit as st
 import os
 from google import genai
+from dotenv import load_dotenv
 
-# API Key
+# Carrega a API key do .env
+load_dotenv()
 api_key = os.getenv("GENAI_API_KEY")
 
 if not api_key:
@@ -12,7 +14,6 @@ else:
 
     st.title("🤖 Chatbot com Streamlit + Gemini")
 
-    # Entrada do usuário
     user_input = st.text_input("Digite sua mensagem:")
 
     if st.button("Enviar") and user_input:
