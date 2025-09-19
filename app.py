@@ -46,9 +46,34 @@ else:
         st.session_state.chat = client.chats.create(model="gemini-2.0-flash")
         st.success("Conversa reiniciada!")
 
-    # Exibe o histórico no estilo chat
+    # Estilos customizados para parecer WhatsApp/Telegram
+    st.markdown("""
+        <style>
+        .user-bubble {
+            background-color: #DCF8C6;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 5px;
+            max-width: 70%;
+            text-align: left;
+            float: right;
+            clear: both;
+        }
+        .bot-bubble {
+            background-color: #E8E8E8;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 5px;
+            max-width: 70%;
+            text-align: left;
+            float: left;
+            clear: both;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Exibe o histórico no estilo chat (bolhas de conversa)
     for msg in st.session_state.messages:
-        with st.chat_message("user", avatar="👤"):
-            st.markdown(msg["user"])
-        with st.chat_message("assistant", avatar="🤖"):
-            st.markdown(msg["bot"])
+        st.markdown(f"<div class='user-bubble'>👤 {msg['user']}</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='bot-bubble'>🤖 {msg['bot']}</div>", unsafe_allow_html=True)
+
