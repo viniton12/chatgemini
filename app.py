@@ -13,33 +13,42 @@ if not api_key:
 else:
     client = genai.Client(api_key=api_key)
 
-    st.set_page_config(page_title="Chatbot AI", page_icon="🤖")
-    st.title("🤖 Biochat")
-    st.write("Estou aqui para ajudar!!.")
+    # Configuração da página
+    st.set_page_config(page_title="BioChat - Assistente de Biologia", page_icon="🌱")
+    st.title("🌱 BioChat")
+    st.write("Seu assistente virtual para estudos em Biologia!")
 
-    # Inicializa o histórico
+    # Inicializa o histórico de mensagens
     if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "chat" not in st.session_state:
+        st.session_state.chat = client.chats.create(model="gemini-2.0-flash")
 
     # Entrada do usuário
-    user_input = st.text_area("Sua mensagem:", height=100)
+    user_input = st.chat_input("Digite sua pergunta...")
 
-    if st.button("Enviar") and user_input:
+    if user_input:
         try:
-            # Cria o chat e envia a mensagem
-            chat = client.chats.create(model="gemini-2.0-flash")
-            resposta = chat.send_message(user_input)
+            with st.spinner("Gerando resposta..."):
+                resposta = st.session_state.chat.send_message(user_input)
 
             # Adiciona ao histórico
             st.session_state.messages.append({"user": user_input, "bot": resposta.text})
 
-            # Limita histórico para as últimas 15 mensagens
+            # Limita histórico para últimas 15 mensagens
             st.session_state.messages = st.session_state.messages[-15:]
         except Exception as e:
             st.error(f"Ocorreu um erro: {e}")
 
-    # Exibe o histórico de mensagens
+    # Botão para limpar histórico
+    if st.button("🗑️ Limpar conversa"):
+        st.session_state.messages = []
+        st.session_state.chat = client.chats.create(model="gemini-2.0-flash")
+        st.success("Conversa reiniciada!")
+
+    # Exibe o histórico no estilo chat
     for msg in st.session_state.messages:
-        st.markdown(f"**Você:** {msg['user']}")
-        st.markdown(f"**Bot:** {msg['bot']}")
-        st.markdown("---")
+        with st.chat_message("user", avatar="👤"):
+            st.markdown(msg["user"])
+        with st.chat_message("assistant", avatar="🤖"):
+            st.markdown(msg["bot"])
